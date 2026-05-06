@@ -1,0 +1,31 @@
+{
+    "name": "oh86/laravel-sm-beijing-ca",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Oh86\\LaravelSmBeijingCa\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chengj",
+            "email": "chen.gj@qq.com"
+        }
+    ],
+    "require": {
+        "oh86/sm_cryptor": "^2.0",
+        "ramsey/uuid": "*"
+    },
+    "require-dev": {
+        "laravel/framework": "^5.4||^6.0||^7.0||^8.0||^9.0||^10.0",
+        "guzzlehttp/guzzle": "*"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Oh86\\LaravelSmBeijingCa\\BeijingCaServiceProvider"
+            ]
+        }
+    }
+}
