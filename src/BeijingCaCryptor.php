@@ -49,6 +49,10 @@ class BeijingCaCryptor extends AbstractCryptor
      */
     public function hmacSm3(string $text): string
     {
+        if (!$text) {
+            return '';
+        }
+
         try {
             $source = base64_encode($text);
             $result = $this->api->hmacSm3($source, $this->config['hmacKeyId']);
@@ -67,6 +71,10 @@ class BeijingCaCryptor extends AbstractCryptor
      */
     public function sm4Encrypt(string $text): string
     {
+        if (!$text) {
+            return '';
+        }
+
         try {
             $plainText = base64_encode($text);
             $result = $this->api->encrypt($plainText, $this->config['sm4KeyId']);
@@ -85,6 +93,10 @@ class BeijingCaCryptor extends AbstractCryptor
      */
     public function sm4Decrypt(string $cipherText): string
     {
+        if (!$cipherText) {
+            return '';
+        }
+
         try {
             $result = $this->api->decrypt($cipherText, $this->config['sm4KeyId']);
             return base64_decode($result['plainText']);

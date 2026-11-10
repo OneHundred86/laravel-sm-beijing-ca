@@ -144,7 +144,6 @@ class BeijingCaApi
      * @param string $plainText   待加密明文，base64编码
      * @param string $keyId
      * @param string $mode        加密模式，默认为ECB，支持ECB/CBC
-     * @param string|null $iv          CBC模式下的初始向量，16字节，base64编码
      * @param string $padding
      * @param array $options
      * @return array{
@@ -152,7 +151,7 @@ class BeijingCaApi
      *         }
      * @throws HttpRequestException
      */
-    public function encrypt($plainText, $keyId, $mode = 'ECB', $iv = null, $padding = 'PKCS7Padding', $options = [])
+    public function encrypt($plainText, $keyId, $mode = 'ECB', $padding = 'PKCS7Padding', $options = [])
     {
         $url = $this->config['baseUrl'] . '/cmk/v1/encrypt';
 
@@ -160,7 +159,7 @@ class BeijingCaApi
             'transId' => (string) Uuid::uuid1()->getHex(),
             'keyId' => $keyId,
             'plainText' => $plainText,
-            'iv' => $iv,
+            // 'iv' => $iv, // mode为CBC时需要传入iv，通过option参数传入
             'mode' => $mode,
             'padding' => $padding,
         ] + $options;
