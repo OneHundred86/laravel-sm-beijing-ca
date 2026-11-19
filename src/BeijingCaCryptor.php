@@ -3,6 +3,7 @@
 namespace Oh86\LaravelSmBeijingCa;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Oh86\LaravelSmBeijingCa\Apis\BeijingCaApi;
 use Oh86\SmCryptor\AbstractCryptor;
 use Oh86\SmCryptor\Exceptions\HttpRequestException;
@@ -77,7 +78,8 @@ class BeijingCaCryptor extends AbstractCryptor
 
         try {
             $plainText = base64_encode($text);
-            $result = $this->api->encrypt($plainText, $this->config['sm4KeyId']);
+            $iv = base64_encode(Str::random(16)); // 生成随机iv，16位字节（128bit）
+            $result = $this->api->encrypt($plainText, $this->config['sm4KeyId'], 'CBC', 'PKCS7Padding', ['iv' => $iv]);
             return $result['cipherTextBlob'];
         } catch (HttpRequestException $e) {
             Log::error(__METHOD__, $e->errors());

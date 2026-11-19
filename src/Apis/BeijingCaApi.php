@@ -145,7 +145,9 @@ class BeijingCaApi
      * @param string $keyId
      * @param string $mode        加密模式，默认为ECB，支持ECB/CBC
      * @param string $padding
-     * @param array $options
+     * @param array{
+     *     iv?: string,  // CBC模式下需要传入iv，16位字节（128bit）的base64编码
+     * } $options
      * @return array{
      *              cipherTextBlob:string,    // 加密结果，base64编码
      *         }
@@ -159,7 +161,6 @@ class BeijingCaApi
             'transId' => (string) Uuid::uuid1()->getHex(),
             'keyId' => $keyId,
             'plainText' => $plainText,
-            // 'iv' => $iv, // mode为CBC时需要传入iv，通过option参数传入
             'mode' => $mode,
             'padding' => $padding,
         ] + $options;
@@ -182,7 +183,8 @@ class BeijingCaApi
 
     /**
      * 解密，默认使用sm4算法
-     * @param mixed $encData   待解密密文，base64编码
+     * @param mixed $encData    待解密密文，base64编码。
+     *                          如果加密的时候使用CBC模式并且传递了iv参数，加密接口返回的加密数据自动携带了与之关联的iv值，此处解密的时候无需再传递iv参数。
      * @param mixed $keyId
      * @param array $options
      * @return array{
